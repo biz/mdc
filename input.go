@@ -244,3 +244,39 @@ func (mdc *MDC) Fullwidth() func(*goquery.Document) {
 		label.Remove()
 	}
 }
+
+// FieldLeadingIcon add a leading icon
+// NOTE: FieldBox or FieldOutlined is required to precede the icon
+func (mdc *MDC) FieldLeadingIcon(icon string) func(*goquery.Document) {
+	return func(doc *goquery.Document) {
+		if !doc.HasClass("mdc-text-field--box") && !doc.HasClass("mdc-text-field--outlined") {
+			return
+		}
+
+		doc.AddClass("mdc-text-field--with-leading-icon")
+		doc.PrependHtml(`<i class="material-icons mdc-text-field__icon" tabindex="0">` + icon + `</i>`)
+
+		if doc.HasClass("mdc-text-field--box") {
+			doc.Find(".mcd-line-ripple").Remove()
+			doc.AppendHtml(`<div class="mdc-text-field__bottom-line"></div>`)
+		}
+	}
+}
+
+// FieldTrailingIcon add a leading icon
+// NOTE: FieldBox or FieldOutlined is required to precede the icon
+func (mdc *MDC) FieldTrailingIcon(icon string) func(*goquery.Document) {
+	return func(doc *goquery.Document) {
+		if !doc.HasClass("mdc-text-field--box") && !doc.HasClass("mdc-text-field--outlined") {
+			return
+		}
+
+		doc.AddClass("mdc-text-field--with-trailing-icon")
+		doc.Find("label").AfterHtml(`<i class="material-icons mdc-text-field__icon" tabindex="0">` + icon + `</i>`)
+
+		if doc.HasClass("mdc-text-field--box") {
+			doc.Find(".mcd-line-ripple").Remove()
+			doc.AppendHtml(`<div class="mdc-text-field__bottom-line"></div>`)
+		}
+	}
+}
