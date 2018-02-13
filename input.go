@@ -115,6 +115,12 @@ func (mdc *MDC) TextInput(name, label, id string, configs ...ElementConfig) temp
 		doc.First().AddClass("mdc-text-field--invalid")
 		if len(doc.Nodes) == 1 {
 			mdc.FieldHelperText(errorMsg)(doc)
+		} else {
+			doc.Closest(".mdc-text-field-helper-text").Empty()
+			doc.Closest(".mdc-text-field-helper-text").First().Nodes[0].AppendChild(&html.Node{
+				Type: html.TextNode,
+				Data: errorMsg,
+			})
 		}
 		doc.Last().RemoveClass("mdc-text-field-helper-text--persistent")
 		doc.Last().AddClass("mdc-text-field-helper-text--validation-msg")
@@ -142,6 +148,12 @@ func (mdc *MDC) Textarea(name, label, id string, configs ...ElementConfig) templ
 		doc.First().AddClass("mdc-text-field--invalid")
 		if len(doc.Nodes) == 1 {
 			mdc.FieldHelperText(errorMsg)(doc)
+		} else {
+			doc.Closest(".mdc-text-field-helper-text").Empty()
+			doc.Closest(".mdc-text-field-helper-text").First().Nodes[0].AppendChild(&html.Node{
+				Type: html.TextNode,
+				Data: errorMsg,
+			})
 		}
 		doc.Last().RemoveClass("mdc-text-field-helper-text--persistent")
 		doc.Last().AddClass("mdc-text-field-helper-text--validation-msg")
@@ -179,7 +191,7 @@ func (mdc *MDC) FieldHelperText(text string) func(*goquery.Document) {
 			Data: text,
 		})
 
-		doc.Nodes = append(doc.Nodes, ht.Nodes[0])
+		doc.Selection = doc.AddNodes(ht.Nodes[0])
 	}
 }
 
