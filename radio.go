@@ -49,3 +49,10 @@ func (mdc *MDC) Radio(name, label, id, value string, configs ...ElementConfig) t
 
 	return render(doc)
 }
+
+func (mdc *MDC) RadioDisabled() func(*goquery.Document) {
+	return func(doc *goquery.Document) {
+		doc.Find("mdc-radio").AddClass("mdc-radio--disabled")
+		doc.Find("input").SetAttr("disabled", "disabled")
+	}
+}
